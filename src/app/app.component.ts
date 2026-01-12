@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SideMenuComponent } from './shared/components/side-menu/side-menu.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [RouterOutlet, SideMenuComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
 })
 export class App {
   protected readonly title = signal('reactive-forms-app');
