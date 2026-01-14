@@ -1,6 +1,13 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, FormArray, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  FormArray,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
@@ -19,11 +26,31 @@ export class DynamicPageComponent {
         ['Metal Gear', Validators.required],
         ['Death Stranding', Validators.required],
       ],
-      Validators.minLength(3)
+      Validators.minLength(2)
     ),
   });
 
+  newFavorite = new FormControl('', Validators.required);
+  // newFavorite = this.formBuilder.control([]);
+
   get favoriteGames() {
     return this.myForm.get('favoriteGames') as FormArray;
+  }
+
+  onAddToFavorites() {
+    if (this.newFavorite.invalid) {
+      return;
+    }
+
+    const newGame = this.newFavorite.value;
+    this.favoriteGames.push(this.formBuilder.control(newGame, Validators.required));
+  }
+
+  onDeleteFavorite(index: number) {
+    this.favoriteGames.removeAt(index);
+  }
+
+  onSubmit() {
+    this.myForm.markAllAsTouched();
   }
 }
