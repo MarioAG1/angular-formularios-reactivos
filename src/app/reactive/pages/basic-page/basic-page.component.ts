@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
   selector: 'app-basic-page',
@@ -22,6 +23,8 @@ export class BasicPageComponent {
   // });
 
   private formBuilder = inject(FormBuilder);
+  formUtils = FormUtils;
+
   //({}) {}, para pasar argumentos
   myForm: FormGroup = this.formBuilder.group({
     // El primer argumento es sincrono y el segundo asincrono [],[]
@@ -30,31 +33,32 @@ export class BasicPageComponent {
     inStorage: [0, [Validators.required, Validators.min(0)]],
   });
 
-  isValidField(fieldname: string): boolean | null {
-    return !!this.myForm.controls[fieldname].errors && this.myForm.controls[fieldname].touched;
-  }
+  // Ya no hace falta
+  // isValidField(fieldname: string): boolean | null {
+  //   return !!this.myForm.controls[fieldname].errors && this.myForm.controls[fieldname].touched;
+  // }
 
-  getFieldError(fieldname: string): string | null {
-    if (!this.myForm.controls[fieldname]) {
-      return null;
-    }
+  // getFieldError(fieldname: string): string | null {
+  //   if (!this.myForm.controls[fieldname]) {
+  //     return null;
+  //   }
 
-    const errors = this.myForm.controls[fieldname].errors ?? {};
+  //   const errors = this.myForm.controls[fieldname].errors ?? {};
 
-    // Tiene que tenener el mismo texto tanto el caso como el return,
-    // no funciona y coerente a los tipo de errores en Angular
-    for (const key of Object.keys(errors)) {
-      switch (key) {
-        case 'required':
-          return 'Este campo es requerido';
-        case 'minlength':
-          return `Minimo de ${errors['minlength'].requiredLength} caracteres.`;
-        case 'min':
-          return `Valor minimo de ${errors['min'].min}`;
-      }
-    }
-    return null;
-  }
+  // Tiene que tenener el mismo texto tanto el caso como el return,
+  // no funciona y coerente a los tipo de errores en Angular
+  //   for (const key of Object.keys(errors)) {
+  //     switch (key) {
+  //       case 'required':
+  //         return 'Este campo es requerido';
+  //       case 'minlength':
+  //         return `Minimo de ${errors['minlength'].requiredLength} caracteres.`;
+  //       case 'min':
+  //         return `Valor minimo de ${errors['min'].min}`;
+  //     }
+  //   }
+  //   return null;
+  // }
 
   onSave() {
     if (this.myForm.invalid) {
