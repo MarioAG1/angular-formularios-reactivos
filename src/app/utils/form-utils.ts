@@ -42,8 +42,19 @@ export class FormUtils {
           return `Valor minimo de ${errors['min'].min}`;
         case 'email':
           return 'El correo electronico no es valido, no parece ser un correo';
+        case 'pattern':
+          if (errors['pattern'].requeredPattern === FormUtils.emailPattern) {
+            return 'El valor dado no parece un correo electronico';
+          }
+          return 'Error de patron contra expresion regular';
+        default:
+          return 'Error de validacion no controlado';
       }
     }
     return null;
   }
+
+  static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
+  static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static notOnlySpacesPattern = '^[a-zA-Z0-9]+$';
 }
