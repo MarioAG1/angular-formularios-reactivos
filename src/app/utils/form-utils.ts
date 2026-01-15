@@ -29,7 +29,7 @@ export class FormUtils {
     return FormUtils.getTextError(errors);
   }
 
-  static getTextError(errors: ValidationErrors) {
+  private static getTextError(errors: ValidationErrors) {
     // Tiene que tenener el mismo texto tanto el caso como el return,
     // no funciona y coerente a los tipo de errores en Angular
     for (const key of Object.keys(errors)) {
@@ -40,6 +40,8 @@ export class FormUtils {
           return `Minimo de ${errors['minlength'].requiredLength} caracteres.`;
         case 'min':
           return `Valor minimo de ${errors['min'].min}`;
+        case 'email':
+          return 'El correo electronico no es valido, no parece ser un correo';
       }
     }
     return null;
