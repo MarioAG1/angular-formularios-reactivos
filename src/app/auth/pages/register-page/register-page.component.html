@@ -89,14 +89,20 @@
             formControlName="password2"
           />
 
-          @if (myForm.controls['password'].value != myForm.controls["password2"].value) {
-          <span class="form-text text-danger"> Las contraseñas deben de ser iguales </span>
+          @if ( formUtils.isValidField(myForm, 'password2')) {
+          <span class="form-text text-danger">
+            {{ formUtils.getFieldError(myForm, 'password2') }}
+          </span>
           }
         </div>
       </div>
 
       <div class="row">
         <div class="col">
+          @if(myForm.errors && myForm.touched) {
+          <span class="text-danger"> Las contraseñas no son iguales </span>
+          }
+
           <button class="btn btn-primary float-end" type="submit">Crear</button>
         </div>
       </div>
