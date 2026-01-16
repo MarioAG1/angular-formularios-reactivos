@@ -26,13 +26,18 @@ export class RegisterPageComponent {
       email: [
         '',
         [Validators.required, Validators.pattern(FormUtils.emailPattern)],
-        // Se añade otro [], para peticiones asincronas
+        // Se añade otro [], para peticiones asincronas,
+        // primero se validan las verificaciones sincronas y despues las asincronas
         [FormUtils.checkingServerResponse],
       ],
       username: [
         '',
-        [Validators.required, Validators.minLength(6)],
-        Validators.pattern(FormUtils.notOnlySpacesPattern),
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(FormUtils.notOnlySpacesPattern),
+          FormUtils.notStrider,
+        ],
       ],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password2: ['', Validators.required],

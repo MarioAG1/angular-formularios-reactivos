@@ -57,6 +57,8 @@ export class FormUtils {
             return 'El valor dado no parece un correo electronico';
           }
           return 'Error de patron contra expresion regular';
+        case 'nameTaken':
+          return 'El nombre no puede ser utilizado';
         default:
           return 'Error de validacion no controlado';
       }
@@ -85,6 +87,18 @@ export class FormUtils {
     if (formValue === 'hola@mundo.com') {
       return {
         emailTaken: true,
+      };
+    }
+
+    return null;
+  }
+
+  static notStrider(control: AbstractControl): ValidationErrors | null {
+    const formValue = control.value;
+
+    if (formValue === 'strider') {
+      return {
+        nameTaken: true,
       };
     }
 
