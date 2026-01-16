@@ -23,7 +23,12 @@ export class RegisterPageComponent {
       // Se le puede quitar el valor inicial M y no pondra ninguna opcion
       // Cuando hay varios Validators hay que ponerlos entre []
       name: ['', [Validators.required, Validators.pattern(FormUtils.namePattern)]],
-      email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
+      email: [
+        '',
+        [Validators.required, Validators.pattern(FormUtils.emailPattern)],
+        // Se añade otro [], para peticiones asincronas
+        [FormUtils.checkingServerResponse],
+      ],
       username: [
         '',
         [Validators.required, Validators.minLength(6)],
