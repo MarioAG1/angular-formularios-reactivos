@@ -3,7 +3,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
-import { switchMap, tap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'country-page',
@@ -26,9 +26,11 @@ export class CountryPageComponent {
 
   onFormChanged = effect((onCleanUp) => {
     const regionSubscription = this.onRegionChange();
+    const countrySubscription = this.onCountryChange();
 
     onCleanUp(() => {
       regionSubscription?.unsubscribe();
+      countrySubscription?.unsubscribe();
     });
   });
 
@@ -46,11 +48,33 @@ export class CountryPageComponent {
           this.borders.set([]);
           this.countryByRegion.set([]);
         }),
-        switchMap((region) => this.countryService.getCountriesByRegion(region!))
+        switchMap((region) => this.countryService.getCountriesByRegion(region ?? ''))
       )
 
       .subscribe((countries) => {
         this.countryByRegion.set(countries);
+      });
+  }
+
+  onCountryChange() {
+    return this.myForm
+      .get('country')
+      ?.valueChanges.pipe(
+        tap(() => {
+          this.myForm.get('border')?.setValue('');
+        }),
+        tap(() => {
+          this.borders.set([]);
+        }),
+        // Con esto hacemos que si hay algun valor vacio no continue,
+        // es decir que hasta que no selecciones el country y el border que no avance
+        filter((value) => value!.length > 0),
+        switchMap((alphacode) => this.countryService.getCountryByAlphaCode(alphacode ?? '')),
+        switchMap((country) => this.countryService.getCountryNamesByCodeArray(country.borders))
+      )
+      .subscribe((borders) => {
+        // console.log({ borders });
+        this.borders.set(borders);
       });
   }
 }
