@@ -75,6 +75,13 @@ export class CountryPageComponent {
       .subscribe((borders) => {
         // console.log({ borders });
         this.borders.set(borders);
+        const borderControl = this.myForm.get('border');
+        if (borders.length === 0) {
+          borderControl!.clearValidators();
+        } else {
+          borderControl?.setValidators([Validators.required]);
+        }
+        borderControl?.updateValueAndValidity();
       });
   }
 }
